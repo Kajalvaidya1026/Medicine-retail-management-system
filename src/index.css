@@ -1,0 +1,226 @@
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid #62f3de;
+  outline-offset: 3px;
+}
+
+/* ======================================== */
+/* registration form css                    */
+/* ======================================== */
+
+
+* {
+  box-sizing: border-box;
+}
+
+.registration-page {
+  min-height: 100vh;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: Arial, sans-serif;
+  background: radial-gradient(circle at top, #0d5367, #071e26 70%);
+}
+
+.registration-layout {
+  width: 100%;
+  max-width: 1100px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.brand-panel {
+  text-align: center;
+}
+
+.brand-logo {
+  margin: 0 auto;
+  width: 60px;
+  padding: 8px;
+  border-radius: 15px;
+  background: #0a829a;
+  box-shadow: 0 0 25px #12e9f5;
+  font-size: 35px;
+}
+
+.brand-title {
+  letter-spacing: 4px;
+}
+
+.brand-title span {
+  color: #20e8ed;
+}
+
+.brand-tagline,
+.register-subtitle {
+  color: #b7dbe4;
+  font-size: 13px;
+}
+
+.medical-art {
+  margin: 35px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.medical-shield {
+  width: 150px;
+  height: 180px;
+  display: grid;
+  place-items: center;
+  border: 4px solid #25eaf5;
+  border-radius: 45%;
+  background: linear-gradient(145deg, #0a829a, #071e26);
+  box-shadow: 0 0 25px #0a829a;
+  font-size: 65px;
+}
+
+.medical-bottle {
+  padding: 20px 12px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #12d8e5, #07516b);
+  font-size: 30px;
+}
+
+.medical-tablets {
+  color: #34f4fa;
+}
+
+.brand-benefits {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.benefit-icon {
+  color: #34f4fa;
+  font-size: 25px;
+}
+
+.brand-benefits p {
+  font-size: 12px;
+}
+
+.register-card {
+  width: 100%;
+  padding: 28px;
+  border: 1px solid #20dce9;
+  border-radius: 20px;
+  background: rgba(9, 63, 82, 0.8);
+  box-shadow: 0 0 30px rgba(0, 220, 255, 0.25);
+  backdrop-filter: blur(12px);
+}
+
+.register-icon {
+  text-align: center;
+  color: #35f5fa;
+  font-size: 35px;
+}
+
+.register-card h2,
+.register-subtitle {
+  text-align: center;
+}
+
+.register-card h2 {
+  margin: 5px 0;
+}
+
+.form-field {
+  margin-bottom: 12px;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+.form-field input,
+.form-field select {
+  width: 100%;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #138ca5;
+  border-radius: 8px;
+  outline: none;
+  background: #082f40;
+  color: white;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+  border-color: #35f5fa;
+  box-shadow: 0 0 8px #0a829a;
+}
+
+.register-button {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #22e9e6, #00aaca);
+  color: #052b3a;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.register-button:disabled {
+  opacity: 0.6;
+}
+
+.register-message {
+  color: #7df7ed;
+  font-size: 13px;
+}
+
+.register-footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.register-footer a {
+  color: #35f5fa;
+}
+
+@media (max-width: 800px) {
+  .registration-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .medical-art {
+    margin: 20px auto;
+  }
+}
