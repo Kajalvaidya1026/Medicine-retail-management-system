@@ -13,7 +13,7 @@ function BrandPanel() {
         Better Health · Brighter Tomorrow
       </p>
 
-      {/* Decorative medical illustration */}
+      {/* Decorative medical illustration
       <div className="medical-art" aria-hidden="true">
         <div className="medical-shield">
           <span>✚</span>
@@ -26,7 +26,7 @@ function BrandPanel() {
           <span>●</span>
           <span>●</span>
         </div>
-      </div>
+      </div> */}
 
       {/* Healthcare benefits */}
       <div className="brand-benefits">

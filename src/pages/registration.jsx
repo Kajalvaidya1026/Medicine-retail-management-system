@@ -1,9 +1,11 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BrandPanel from "../components/BrandPanel";
 import FormInput from "../components/FormInput";
 import PasswordRequirements from "../components/PasswordRequirements";
 import "../index.css";
+import { createUser } from "../api/authService.js";
+import Logo from "../components/logo.jsx";
 import axiosClient from "../api/axiosClient";
 
 function Registration() {
@@ -21,6 +23,14 @@ function Registration() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [roles, setRoles] = useState([]);
+  useEffect(() => {
+  axiosClient
+    .get("/roles/viewRoles")
+    .then((res) => setRoles(res.data))
+    .catch(() => setMessage("Could not load roles from the server."));
+}, []);
+
   // Update the field that the user changes.
   function handleChange(event) {
     const { name, value } = event.target;
@@ -32,77 +42,75 @@ function Registration() {
   }
 
   // Validate and submit the registration form.
-  async function handleSubmit(event) {
-    event.preventDefault();
-    setMessage("");
 
-    if (
-      !user.fullName.trim() ||
-      !user.email.trim() ||
-      !user.contactNumber.trim() ||
-      !user.password ||
-      !user.confirmPassword ||
-      !user.role
-    ) {
-      setMessage("Please fill in all fields.");
-      return;
-    }
+    async function handleSubmit(event) {
+  event.preventDefault();
+  setMessage("");
 
-    if (user.password !== user.confirmPassword) {
-      setMessage("Passwords do not match.");
-      return;
-    }
-
-    if (user.password.length < 8) {
-      setMessage("Password must contain at least 8 characters.");
-      return;
-    }
-
-    if (!/^\d{10}$/.test(user.contactNumber.trim())) {
-      setMessage("Enter a valid 10-digit contact number.");
-      return;
-    }
-
-    // Confirm password is used for validation only.
-    const registrationData = {
-      fullName: user.fullName.trim(),
-      email: user.email.trim(),
-      contactNumber: user.contactNumber.trim(),
-      password: user.password,
-      role: user.role,
-    };
-
-    try {
-      setLoading(true);
-
-      // Send registration data to your Spring Boot backend.
-      const response = await axiosClient.post(
-        "/users/save",
-        registrationData
-      );
-
-      if (response.status === 200 || response.status === 201) {
-        setMessage("Registration successful!");
-
-        // Clear the form after successful registration.
-        setUser({
-          fullName: "",
-          email: "",
-          contactNumber: "",
-          password: "",
-          confirmPassword: "",
-          role: "",
-        });
-      }
-    } catch (error) {
-      setMessage(
-        error.response?.data?.message ||
-        "Registration failed. Please check your backend."
-      );
-    } finally {
-      setLoading(false);
-    }
+  if (
+    !user.fullName.trim() ||
+    !user.email.trim() ||
+    !user.contactNumber.trim() ||
+    !user.password ||
+    !user.confirmPassword ||
+    !user.role
+  ) {
+    setMessage("Please fill in all fields.");
+    return;
   }
+
+  if (user.password !== user.confirmPassword) {
+    setMessage("Passwords do not match.");
+    return;
+  }
+
+  if (user.password.length < 8) {
+    setMessage("Password must contain at least 8 characters.");
+    return;
+  }
+
+  if (!/^\d{10}$/.test(user.contactNumber.trim())) {
+    setMessage("Enter a valid 10-digit contact number.");
+    return;
+  }
+
+  const registrationData = {
+    fullName: user.fullName.trim(),
+    email: user.email.trim(),
+    contactNumber: user.contactNumber.trim(),
+    password: user.password,
+    role: { roleId: Number(user.role) },
+  };
+
+  try {
+    setLoading(true);
+
+    const response = await axiosClient.post("/users/save", registrationData);
+
+    if (response.status === 200 || response.status === 201) {
+      setMessage("Registration successful!");
+      setUser({
+        fullName: "",
+        email: "",
+        contactNumber: "",
+        password: "",
+        confirmPassword: "",
+        role: "",
+      });
+    }
+  } catch (error) {
+    console.log("REGISTER ERROR:", error.response?.status, error.response?.data, error.message);
+    setMessage(
+      error.response?.data?.detail ||
+      error.response?.data?.message ||
+      (error.response
+        ? `Server error ${error.response.status}. Check the backend console.`
+        : "Cannot reach the backend. Is it running on port 8085?")
+    );
+  } finally {
+    setLoading(false);
+  }
+}
 
   return (
     <main className="registration-page">
@@ -112,7 +120,8 @@ function Registration() {
 
         {/* Right side: registration form */}
         <section className="register-card">
-          <div className="register-icon">✚</div>
+          
+          <Logo size="large" />
 
           <h2>Create Account</h2>
 
@@ -186,26 +195,33 @@ function Registration() {
                 onChange={handleChange}
                 required
               >
-                <option value="">Choose your role</option>
+                {/* <option value="">Choose your role</option>
                 <option value="SuperAdmin">Super Admin</option>
                 <option value="Admin">Admin</option>  
                 <option value="Customer">Customer</option>
                 <option value="Supplier">Supplier</option>
                 <option value="Doctor">Doctor</option>
-                <option value="MR">MR</option>
-                  
+                <option value="MR">MR</option> */}
+
+                <option value="">Choose your role</option>
+                {roles.map((r, index) => (
+                <option key={r.roleId ?? index} value={r.roleId}>
+                   {r.roleName}
+               </option>
+            ))}
               </select>
             </div>
 
-            {/* Reuse your existing password requirements component. */}
             <PasswordRequirements password={user.password} />
+
+            
 
             <button
               type="submit"
               className="register-button"
               disabled={loading}
             >
-              {loading ? "Creating Account..." : "✚ Create Account →"}
+              {loading ? "Creating Account..." : " Create Account →"}
             </button>
           </form>
 

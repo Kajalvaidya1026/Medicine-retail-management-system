@@ -1,11 +1,15 @@
 
 import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import "../App.css";
-//import{ loginUser} from "../api/auth.js"; 
 import { loginUser } from "../api/authService.js";
+import Logo from "../components/logo.jsx";
 
 function Login() {
   
+  const location = useLocation();
+  const registrationMessage = location.state?.message;
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -43,42 +47,41 @@ function Login() {
   }
 
   setIsLoading(true);
-
   try {
-    const response = await loginUser(trimmedEmail, password);
+    const { data } = await loginUser(trimmedEmail, password);
 
-    // Handle APIs that return Axios responses or plain data.
-    const data = response?.data ?? response;
-
-    if (data?.flag === false || data?.success === false) {
+    // Backend returns 200 with flag=false for wrong email/password
+    if (data.flag === false) {
       setMessage(data.message || "Invalid email or password.");
       setMessageType("error");
       return;
     }
 
-    setMessage(data?.message || "Login successful!");
+    setMessage(data.message || "Login successful!");
     setMessageType("success");
+    // later: navigate("/dashboard");
   } catch (error) {
     setMessage(
+      error.response?.data?.detail ||
       error.response?.data?.message ||
-        error.message ||
-        "Login failed. Please check your credentials and try again."
+      "Cannot reach the server. Is the backend running?"
     );
     setMessageType("error");
   } finally {
     setIsLoading(false);
   }
 
-    //call loginUser function from api/auth.js to send login request to backend 
-  loginUser(trimmedEmail, password)
-  .then((data) => {
-    setMessage(data.message || "Login successful!");
-    setMessageType("success");
-  })
-  .catch((error) => {
-    setMessage(error.message || "Login failed. Please try again.");
-    setMessageType("error");
-  });
+
+  //   //call loginUser function from api/auth.js to send login request to backend 
+  // loginUser(trimmedEmail, password)
+  // .then((data) => {
+  //   setMessage(data.message || "Login successful!");
+  //   setMessageType("success");
+  // })
+  // .catch((error) => {
+  //   setMessage(error.message || "Login failed. Please try again.");
+  //   setMessageType("error");
+  // });
 
 }
 
@@ -96,15 +99,21 @@ function Login() {
 
       {/* Main 3D login card */}
       <section className="login-card">
-        <div className="brand-icon">✚</div>
-
-        <p className="brand-name">MEDICARE</p>
+        
+        <Logo size ="large" />
 
         <h1>Welcome Back!</h1>
 
         <p className="subtitle">
           Sign in to your medicine management account
         </p>
+
+        {registrationMessage && (
+        <p className="register-message" role="status">
+            {registrationMessage}
+        </p>
+        )}
+
 
         <form onSubmit={handleLogin}>
           {/* Email input */}
@@ -204,10 +213,9 @@ function Login() {
 
         <p className="register-text">
           New to Medicare?{" "}
-          <a href="#register">Create an account</a>
+          <Link to="/register">Create an account</Link>
         </p>
-
-        <div className="security-note">
+                <div className="security-note">
           <span aria-hidden="true">🔒</span>
           Your account security matters to us
         </div>
