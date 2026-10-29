@@ -18,3 +18,6 @@ export function createUser(user) {
 export function getAllUser() {
   return axiosClient.get("/users/viewUsers");
 }
+ export function forgotPassword(email) {
+  return axiosClient.post("/users/forgot-password", { email: email.trim() });
+}

@@ -70,19 +70,6 @@ function Login() {
   } finally {
     setIsLoading(false);
   }
-
-
-  //   //call loginUser function from api/auth.js to send login request to backend 
-  // loginUser(trimmedEmail, password)
-  // .then((data) => {
-  //   setMessage(data.message || "Login successful!");
-  //   setMessageType("success");
-  // })
-  // .catch((error) => {
-  //   setMessage(error.message || "Login failed. Please try again.");
-  //   setMessageType("error");
-  // });
-
 }
 
   return (
@@ -115,7 +102,7 @@ function Login() {
         )}
 
 
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleLogin} noValidate>
           {/* Email input */}
           <div className="form-group">
             <label htmlFor="email">Email Address</label>
@@ -182,7 +169,7 @@ function Login() {
               <span>Remember me</span>
             </label>
 
-            <a href="#forgot-password">Forgot password?</a>
+          <Link to="/forgot-password">Forgot password?</Link>
           </div>
 
           {/* Submit button */}
@@ -227,6 +214,5 @@ function Login() {
     </main>
   );
 }
-
 export default Login;
 
