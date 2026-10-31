@@ -2,9 +2,10 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "../App.css";
-import { loginUser } from "../api/authService.js";
+import { loginUser, getAllUser } from "../api/authService.js";
 import Logo from "../components/logo.jsx";
 import { useNavigate } from "react-router-dom";
+
 
 function Login() {
   
@@ -50,32 +51,54 @@ function Login() {
   }
 
   setIsLoading(true);
+
+try {
+  const { data } = await loginUser(trimmedEmail, password);
+
+  console.log("LOGIN RESPONSE:", data);
+
+  // Check existing Users API
   try {
-    const { data } = await loginUser(trimmedEmail, password);
+    const usersResponse = await getAllUser();
 
-    // Backend returns 200 with flag=false for wrong email/password
-    if (data.flag === false) {
-      setMessage(data.message || "Invalid email or password.");
-      setMessageType("error");
-      return;
-    }
+    console.log(
+  "ALL USERS JSON:",
+  JSON.stringify(usersResponse.data, null, 2)
+);
+  } catch (userError) {
+    console.error("GET USERS ERROR:", userError);
+  }
 
-    setMessage(data.message || "Login successful!");
-    setMessageType("success");
-    navigate("/dashboard");
+  // Check login response
+  if (data.flag !== true) {
+    setMessage(data.message || "Invalid email or password.");
+    setMessageType("error");
+    return;
+  }
 
-    const role = data.role?.toUpperCase();
-    sessionStorage.setItem("role", role);
+  // Get user role
+  const role = data.role?.trim().toUpperCase();
 
+  if (!role) {
+    setMessage("User role is missing from login response.");
+    setMessageType("error");
+    return;
+  }
+
+  // Store role
+  sessionStorage.setItem("role", role);
+
+ 
+setMessage("Login successful!");
+setMessageType("success");
+
+/// Navigate according to role
 if (role === "ADMIN") {
-  sessionStorage.setItem("role", role);
-  navigate("/admin");
+  navigate("/admin", { replace: true });
 } else if (role === "PHARMACIST") {
-  sessionStorage.setItem("role", role);
-  navigate("/pharmacist");
+  navigate("/pharmacist", { replace: true });
 } else if (role === "CUSTOMER") {
-  sessionStorage.setItem("role", role);
-  navigate("/customer");
+  navigate("/customer", { replace: true });
 } else {
   sessionStorage.removeItem("role");
   setMessage("Your account role is not recognized.");

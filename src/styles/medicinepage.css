@@ -1,0 +1,83 @@
+/* =====================================
+   COMMON DASHBOARD STYLE - MEDICINES
+===================================== */
+
+.medicines-page {
+  width: 100%;
+  padding: 0;
+  color: #ffffff;
+}
+
+/* Compact heading */
+.medicines-heading {
+  min-height: 95px;
+  padding: 15px 20px;
+  margin-bottom: 18px;
+  animation: none;
+}
+
+.medicines-heading h1 {
+  font-size: 24px;
+  margin-bottom: 6px;
+}
+
+.medicines-heading p {
+  font-size: 12px;
+}
+
+/* Compact Add Button */
+.add-medicine-btn {
+  padding: 10px 17px;
+  font-size: 13px;
+}
+
+/* Same size as dashboard cards */
+.medicine-summary {
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.medicine-summary-card {
+  min-height: 130px;
+  padding: 17px;
+  border-radius: 12px;
+}
+
+/* Medicine List */
+.medicine-table-card {
+  padding: 17px;
+  border-radius: 12px;
+}
+
+.medicine-table-heading {
+  margin-bottom: 15px;
+}
+
+.medicine-table-heading h2 {
+  font-size: 17px;
+}
+
+.medicine-table-heading input {
+  padding: 10px 13px;
+  font-size: 12px;
+}
+
+/* Compact table */
+.medicine-table-scroll th,
+.medicine-table-scroll td {
+  padding: 12px 10px;
+  font-size: 12px;
+}
+
+/* Consistent 3D hover */
+.medicine-summary-card:hover,
+.medicine-table-card:hover {
+  border-color: #25c3d9;
+  box-shadow: 0 12px 25px #00d9ef25;
+}
+
+@media (max-width: 768px) {
+  .medicine-summary {
+    grid-template-columns: 1fr;
+  }
+}

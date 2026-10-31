@@ -1,3 +1,4 @@
+
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import Registration from "./pages/registration";
@@ -9,16 +10,22 @@ import AdminRoute from "./components/AdminRoute.jsx";
 function App() {
   return (
     <Routes>
+      {/* Default page */}
       <Route path="/" element={<Navigate to="/login" replace />} />
+
+      {/* Authentication pages */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Registration />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route element={<AdminRoute />}>
-    <Route path="/admin" element={<AdminDashboard />} />
-  </Route>
 
-  <Route path="*" element={<Navigate to="/login" replace />} />
-</Routes>
+      {/* Protected Admin Dashboard */}
+      <Route element={<AdminRoute />}>
+        <Route path="/admin" element={<AdminDashboard />} />
+      </Route>
+
+      {/* Unknown routes */}
+      <Route path="*" element={<Navigate to="/login" replace />} />
+    </Routes>
   );
 }
 
