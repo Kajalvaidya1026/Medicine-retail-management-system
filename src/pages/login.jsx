@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import "../App.css";
 import { loginUser } from "../api/authService.js";
 import Logo from "../components/logo.jsx";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
   
@@ -18,6 +19,8 @@ function Login() {
  
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
+
+  const navigate = useNavigate();
 
   async function handleLogin(event) {
   event.preventDefault();
@@ -59,7 +62,26 @@ function Login() {
 
     setMessage(data.message || "Login successful!");
     setMessageType("success");
-    // later: navigate("/dashboard");
+    navigate("/dashboard");
+
+    const role = data.role?.toUpperCase();
+    sessionStorage.setItem("role", role);
+
+if (role === "ADMIN") {
+  sessionStorage.setItem("role", role);
+  navigate("/admin");
+} else if (role === "PHARMACIST") {
+  sessionStorage.setItem("role", role);
+  navigate("/pharmacist");
+} else if (role === "CUSTOMER") {
+  sessionStorage.setItem("role", role);
+  navigate("/customer");
+} else {
+  sessionStorage.removeItem("role");
+  setMessage("Your account role is not recognized.");
+  setMessageType("error");
+}
+   
   } catch (error) {
     setMessage(
       error.response?.data?.detail ||

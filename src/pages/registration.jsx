@@ -1,16 +1,20 @@
 import Logo from "../components/logo.jsx";
 
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import BrandPanel from "../components/BrandPanel";
 import FormInput from "../components/FormInput";
 import PasswordRequirements from "../components/PasswordRequirements";
 import "../index.css";
 import axiosClient from "../api/axiosClient";
 
-const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$/;
+
+const EMAIL_PATTERN =
+  /^[a-zA-Z0-9._%+-]+@[a-zA-Z][a-zA-Z0-9-]*(\.[a-zA-Z]{2,})+$/;
 
 function isValidEmail(email) {
   const e = email.trim();
+
   return (
     EMAIL_PATTERN.test(e) &&
     !e.includes("..") &&
@@ -20,6 +24,8 @@ function isValidEmail(email) {
 }
 
 function Registration() {
+
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     fullName: "",
     email: "",
@@ -120,6 +126,13 @@ function Registration() {
           confirmPassword: "",
           role: "",
         });
+        setTimeout(() => {
+          navigate("/login", {
+            state: {
+              message: "Registration successful! Please login.",
+            },
+          });
+        }, 2000);
       }
     } catch (error) {
       console.log(
@@ -145,7 +158,7 @@ function Registration() {
       <div className="registration-layout">
         <BrandPanel />
 
-        <section className="register-card">
+        <section className="register-card">   
           <div className="register-icon">✚</div>
 
           <h2>Create Account</h2>
